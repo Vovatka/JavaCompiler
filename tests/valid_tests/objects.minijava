@@ -1,0 +1,21 @@
+class Counter {
+    int value;
+    public int inc() {
+        value = value + 1;
+        return value;
+    }
+    public int getValue() {
+        return value;
+    }
+}
+
+class Test {
+    public static void main() {
+        Counter c;
+        c = new Counter();
+        System.out.println(c.getValue());
+        System.out.println(c.inc());
+        System.out.println(c.inc());
+        System.out.println(c.getValue());
+    }
+}

@@ -1,0 +1,14 @@
+
+#include "ThisExpression.h"
+#include <variant>
+
+ThisExpression::ThisExpression(yy::location loc) : Expression(loc) {}
+
+void ThisExpression::Accept(Visitor *visitor) { visitor->Visit(this); }
+
+std::variant<int, std::string> ThisExpression::eval() const { return 0; }
+
+Type ThisExpression::EvalType(ScopeLayer *scope)
+{
+    return scope->GetCurrentClass()->GetType();
+}

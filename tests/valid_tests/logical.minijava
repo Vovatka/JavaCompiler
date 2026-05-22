@@ -1,0 +1,15 @@
+class Test {
+    public static void main() {
+        bool a; bool b; bool c;
+        a = true;
+        b = false;
+        c = a && b;
+        System.out.println(c);
+        c = a || b;
+        System.out.println(c);
+        c = !a;
+        System.out.println(c);
+        c = !b;
+        System.out.println(c);
+    }
+}

@@ -1,0 +1,15 @@
+class Test {
+    public static void main() {
+        int i; int j;
+        i = 0;
+        j = 0;
+        while (i < 3) {
+            j = 0;
+            while (j < 3) {
+                System.out.println(i + j);
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+    }
+}

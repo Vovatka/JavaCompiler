@@ -1,0 +1,15 @@
+class Test {
+    public static void main() {
+        int a; int b; bool c;
+        a = 5;
+        b = 7;
+        c = a < b;
+        System.out.println(c);
+        c = a > b;
+        System.out.println(c);
+        c = a == b;
+        System.out.println(c);
+        c = a == a;
+        System.out.println(c);
+    }
+}

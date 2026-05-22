@@ -1,0 +1,13 @@
+class Test {
+    public static void main() {
+        int a; bool b; int c;
+        a = 42;
+        b = true;
+        c = 100;
+        System.out.println(a);
+        if (b)
+            System.out.println(c);
+        else
+            System.out.println(0);
+    }
+}
