@@ -1,0 +1,63 @@
+#ifndef JAVACOMPILER_SCOPELAYER_H
+#define JAVACOMPILER_SCOPELAYER_H
+
+#include "Objects/Object.h"
+#include "Symbols/BaseSymbol.h"
+
+#include <memory>
+#include <stack>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include <Symbols/STClass.h>
+#include <Symbols/STMethod.h>
+#include <Symbols/STVariable.h>
+
+class ScopeLayer
+{
+  public:
+    explicit ScopeLayer(ScopeLayer *parent);
+    ScopeLayer(ScopeLayer *parent, long long new_offset);
+    ScopeLayer();
+
+    ScopeLayer *AddChild(ScopeLayer *child);
+
+    ScopeLayer *GetChild(size_t index);
+    ScopeLayer *GetParent() const;
+
+    void DeclareClass(const STClass &class_decl);
+    void DeclareLocalVariable(const STVariable &var);
+
+    void DeclareMethod(const std::string &method_name);
+
+    bool HasVariableAtLayer(const std::string &var_name) const;
+
+    void EnterClass(const STClass *cur_class);
+
+    const STClass *GetCurrentClass() const;
+    const STMethod *GetCurrentMethod() const;
+
+    STClass *GetClassByName(const std::string &class_name);
+
+    STVariable *GetVariableByName(const std::string &var_name);
+
+    long long GetOffsetOfVariable(const std::string &var_name) const;
+
+    long long GetCurrentOffset() const;
+
+  private:
+    std::unordered_map<std::string, STVariable> variables_;
+    std::unordered_map<std::string, STClass> classes_;
+
+    std::unordered_map<std::string, long long> offsets_;
+    long long current_offset_ = 0;
+
+    const STClass *current_class_ = nullptr;
+    const STMethod *current_method_ = nullptr;
+
+    ScopeLayer *parent_;
+    std::vector<ScopeLayer *> children_;
+};
+
+#endif // JAVACOMPILER_SCOPELAYER_H
