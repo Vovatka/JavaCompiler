@@ -1,16 +1,21 @@
-class Factorial {
-  public static void main () {
-    System.out.println (new Fac ().ComputeFac (10));
-  }
+class Test {
+    public static void main() {
+        Counter c;
+        c = new Counter();
+        System.out.println(c.getValue());
+        System.out.println(c.inc());
+        System.out.println(c.inc());
+        System.out.println(c.getValue());
+    }
 }
 
-class Fac {
-  public int ComputeFac (int num) {
-    int num_aux;
-    if (num == 0)
-      num_aux = 1;
-    else
-      num_aux = num * this.ComputeFac (num-1);
-    return num_aux;
-  }
+class Counter {
+    int value;
+    public int inc() {
+        this.value = this.value + 1;
+        return this.value;
+    }
+    public int getValue() {
+        return this.value;
+    }
 }

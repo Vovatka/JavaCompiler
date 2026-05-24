@@ -192,9 +192,9 @@ local_variable_declaration:
     type IDENTIFIER SEMICOLON {$$ = new LocalVarDeclaration($1, $2, driver.loc);};
 
 method_invocation:
-    THISINV IDENTIFIER LBRACKET RBRACKET {$$ = new MethodInvocation(new ThisExpression(driver.loc), $2, nullptr, driver.loc);}
+    THISINV IDENTIFIER LBRACKET RBRACKET {$$ = new MethodInvocation(new ThisExpression(driver.loc), $2, new ExpressionList(driver.loc), driver.loc);}
   | THISINV IDENTIFIER LBRACKET exprs RBRACKET {$$ = new MethodInvocation(new ThisExpression(driver.loc), $2, $4, driver.loc);}
-  | expr DOT IDENTIFIER LBRACKET RBRACKET {$$ = new MethodInvocation($1, $3, nullptr, driver.loc);}
+  | expr DOT IDENTIFIER LBRACKET RBRACKET {$$ = new MethodInvocation($1, $3, new ExpressionList(driver.loc), driver.loc);}
   | expr DOT IDENTIFIER LBRACKET exprs RBRACKET {$$ = new MethodInvocation($1, $3, $5, driver.loc);};
 
 exprs:

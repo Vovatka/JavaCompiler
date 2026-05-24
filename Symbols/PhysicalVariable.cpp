@@ -60,8 +60,11 @@ void PhysicalVariable::SetField(const std::string &field_name,
 }
 
 PhysicalVariable::PtrType
-PhysicalVariable::GetField(const std::string &field_name) const
+PhysicalVariable::GetField(const std::string &field_name)
 {
+    if (!std::get<FieldsMap>(value_).count(field_name)) {
+        std::get<FieldsMap>(value_)[field_name] = std::make_shared<PhysicalVariable>(0);
+    }
     return std::get<FieldsMap>(value_).at(field_name);
 }
 

@@ -38,7 +38,8 @@ Type MethodInvocation::EvalType(ScopeLayer *scope)
         throw std::runtime_error("Class '" + class_name.type_name +
                                  "' doesn't have method '" + method_name + "'");
     }
-    if (arguments->expressions.size() != method_ref->arguments.size())
+    if ((arguments == nullptr && method_ref->arguments.size() != 0) || 
+        (arguments != nullptr && arguments->expressions.size() != method_ref->arguments.size()))
     {
         std::cerr << Expression::loc << std::endl;
         throw std::runtime_error("Method '" + method_name + "' of class '" +
