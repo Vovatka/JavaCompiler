@@ -1,3 +1,10 @@
+
+class Test {
+    public static void main() {
+        System.out.println(new Factorial().ComputeFac(5));
+    }
+}
+
 class Factorial {
     public int ComputeFac(int num) {
         int num_aux;
@@ -6,11 +13,5 @@ class Factorial {
         else
             num_aux = num * this.ComputeFac(num - 1);
         return num_aux;
-    }
-}
-
-class Test {
-    public static void main() {
-        System.out.println(new Factorial().ComputeFac(5));
     }
 }
