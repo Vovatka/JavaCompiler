@@ -2,8 +2,8 @@
 #include <Visitors/ExecuteVisitor.h>
 
 Driver::Driver()
-    : scanner(*this), parser(scanner, *this), trace_parsing(true),
-      trace_scanning(true)
+    : scanner(*this), parser(scanner, *this), trace_parsing(false),
+      trace_scanning(false)
 {
 }
 
