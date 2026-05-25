@@ -78,9 +78,6 @@ digraph MiniJavaDeps {
   "PhysicalVariable" [fillcolor="#fff9c4", label="PhysicalVariable\nРантайм-значение\n(int/bool/массив/объект)", tooltip="Рантайм-значение (int/bool/массив/объект)"];
   "ScopeLayer" [fillcolor="#b2dfdb", label="ScopeLayer\nСлой области видимости\n(offset)", tooltip="Слой области видимости (offset)"];
   "ScopeLayerTree" [fillcolor="#b2dfdb", label="ScopeLayerTree\nДерево областей\nвидимости", tooltip="Дерево областей видимости"];
-  "Object" [fillcolor="#eeeeee", label="Object\nРантайм-объект\n(legacy)", tooltip="Рантайм-объект (legacy)"];
-  "Int" [fillcolor="#eeeeee", label="Int\nInt (legacy)", tooltip="Int (legacy)"];
-  "Bool" [fillcolor="#eeeeee", label="Bool\nBool (legacy)", tooltip="Bool (legacy)"];
   "AddExpression" -> "ArithmeticExpression";
   "AllocExpression" -> "Expression";
   "AllocExpression" -> "Type";
@@ -88,7 +85,6 @@ digraph MiniJavaDeps {
   "Assert" -> "Expression";
   "Assert" -> "Statement";
   "BinaryExpression" -> "Expression";
-  "Bool" -> "Object";
   "ClassDeclaration" -> "Statement";
   "ClassDeclaration" -> "Visitor";
   "ClassDeclarationList" -> "ClassDeclaration";
@@ -123,7 +119,6 @@ digraph MiniJavaDeps {
   "IfElse" -> "Expression";
   "IfElse" -> "Statement";
   "IndexExpression" -> "Expression";
-  "Int" -> "Object";
   "LengthExpression" -> "Expression";
   "LengthExpression" -> "FieldInvokeExpression";
   "LessExpression" -> "ComparisonExpression";
@@ -179,9 +174,7 @@ digraph MiniJavaDeps {
   "ScopeBlock" -> "Visitor";
   "ScopeLayer" -> "BaseSymbol";
   "ScopeLayer" -> "FormalsList";
-  "ScopeLayer" -> "Int";
   "ScopeLayer" -> "MethodDeclaration";
-  "ScopeLayer" -> "Object";
   "ScopeLayer" -> "STClass";
   "ScopeLayer" -> "STMethod";
   "ScopeLayer" -> "STVariable";
