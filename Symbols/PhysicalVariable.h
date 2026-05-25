@@ -36,7 +36,7 @@ class PhysicalVariable
 
     void SetField(const std::string &field_name, PtrType new_val);
 
-    PtrType GetField(const std::string &field_name);
+    PtrType GetField(const std::string &field_name) const;
 
     int GetLength() const;
 

@@ -76,7 +76,6 @@
     TRUE "true"
     FALSE "false"
     BOYLERPLATE "public static void main"
-    EMPTYBRACKETS "[]"
 ;
 
 %token <std::string> IDENTIFIER "id"
@@ -99,12 +98,15 @@
 %nterm <ExpressionList*> exprs;
 %nterm <Type> type;
 %nterm <Type> simple_type;
+%nterm <Type> builtin_type;
 %nterm <Type> array_type;
 %nterm <std::string> type_identifier;
 %nterm <FieldDeclaration*> field_declaration;
 
-%%
-
+/* Приоритеты и ассоциативность (от низшего к высшему).
+ * ВАЖНО: эти объявления обязаны находиться в секции деклараций (до %%),
+ * иначе Bison их игнорирует и грамматика теряет приоритеты — в частности
+ * ломается разбор массивов (int[] / arr[i]). */
 %left ";";
 %left "=";
 %left "||";
@@ -113,17 +115,16 @@
 %left ">" "<";
 %left "+" "-";
 %left "*" "/" "%";
-%left "(";
-%left "[";
-
+%precedence "then";
+%precedence "else";
 %left ".";
-
-%left "!";
-
-%nonassoc "then";
-%nonassoc "else";
+%left "[";
+%left "(";
+%precedence "!";
 
 %start program;
+
+%%
 
 program:
     main_class class_declarations {$$ = new Program($1, $2, driver.loc); driver.program = $$;};
@@ -170,8 +171,20 @@ simple_type:
   | VOID {$$ = Type("void");}
   | type_identifier {$$ = Type($1);};
 
+/* Тип-массив строится ТОЛЬКО на встроенных типах (int[], bool[]).
+ * Если бы здесь допускался type_identifier (IDENTIFIER), возникал бы
+ * reduce/reduce-конфликт: в начале оператора `arr[i] = ...` токен IDENTIFIER
+ * можно свернуть и в type_identifier (объявление массива), и в IdentExpression
+ * (индексация). Bison разрешал бы его в пользу типа, и `arr[i]` ломалось бы
+ * с ошибкой «expecting ]». Ограничение типов-массивов встроенными типами
+ * убирает неоднозначность; массивы пользовательских классов в подмножестве
+ * не используются. */
+builtin_type:
+    INT {$$ = Type("int");}
+  | BOOLEAN {$$ = Type("bool");};
+
 array_type:
-    simple_type LEFTSBRACKET RIGHTSBRACKET {$$ = $1; $$.is_array = true;};
+    builtin_type LEFTSBRACKET RIGHTSBRACKET {$$ = $1; $$.is_array = true;};
 
 type_identifier:
     IDENTIFIER {$$ = $1;};
@@ -192,9 +205,9 @@ local_variable_declaration:
     type IDENTIFIER SEMICOLON {$$ = new LocalVarDeclaration($1, $2, driver.loc);};
 
 method_invocation:
-    THISINV IDENTIFIER LBRACKET RBRACKET {$$ = new MethodInvocation(new ThisExpression(driver.loc), $2, new ExpressionList(driver.loc), driver.loc);}
+    THISINV IDENTIFIER LBRACKET RBRACKET {$$ = new MethodInvocation(new ThisExpression(driver.loc), $2, nullptr, driver.loc);}
   | THISINV IDENTIFIER LBRACKET exprs RBRACKET {$$ = new MethodInvocation(new ThisExpression(driver.loc), $2, $4, driver.loc);}
-  | expr DOT IDENTIFIER LBRACKET RBRACKET {$$ = new MethodInvocation($1, $3, new ExpressionList(driver.loc), driver.loc);}
+  | expr DOT IDENTIFIER LBRACKET RBRACKET {$$ = new MethodInvocation($1, $3, nullptr, driver.loc);}
   | expr DOT IDENTIFIER LBRACKET exprs RBRACKET {$$ = new MethodInvocation($1, $3, $5, driver.loc);};
 
 exprs:
@@ -217,7 +230,7 @@ expr:
   | expr PERCENT expr {$$ = new ModExpression($1, $3, driver.loc);}
   | expr LEFTSBRACKET expr RIGHTSBRACKET {$$ = new IndexExpression($1, $3, driver.loc);}
   | expr DOT LENGTH {$$ = new LengthExpression($1, driver.loc);}
-  | NEW simple_type LEFTSBRACKET expr RIGHTSBRACKET { $$ = new AllocExpression(Type($2.type_name, true), $4, driver.loc); }
+  | NEW builtin_type LEFTSBRACKET expr RIGHTSBRACKET { $$ = new AllocExpression(Type($2.type_name, true), $4, driver.loc); }
   | NEW type_identifier LBRACKET RBRACKET { $$ = new AllocExpression(Type($2), nullptr, driver.loc); }
   | BANG expr {$$ = new NotExpression($2, driver.loc);}
   | LBRACKET expr RBRACKET {$$ = $2;}

@@ -4,13 +4,26 @@ PhysicalVariable::PhysicalVariable(Type type, size_t size)
 {
     if (type.is_array)
     {
-        std::get<Array>(value_).resize(size);
+        // value_ is default-constructed as the first alternative (FieldsMap),
+        // so we must switch it to Array before using std::get<Array>.
+        // Каждая ячейка должна содержать реальный объект (а не нулевой
+        // shared_ptr), иначе запись `arr[i] = ...` (через `*cell = *value`)
+        // разыменует nullptr. Тип элемента — базовый тип массива.
+        Type element_type = type;
+        element_type.is_array = false;
+        Array cells;
+        cells.reserve(size);
+        for (size_t i = 0; i < size; ++i)
+        {
+            cells.push_back(std::make_shared<PhysicalVariable>(element_type));
+        }
+        value_ = std::move(cells);
     }
     else
     {
         if (size != 1)
             throw std::runtime_error(
-                "Cringe! Dont' use PhysicalVariable() like this.");
+                "Don't use PhysicalVariable() like this.");
         if (type == Type("int"))
         {
             SetValue(0);
@@ -21,7 +34,8 @@ PhysicalVariable::PhysicalVariable(Type type, size_t size)
         }
         else
         {
-            std::get<FieldsMap>(value_);
+            // A user-defined class instance: store its fields in a map.
+            value_ = FieldsMap{};
         }
     }
 }
@@ -60,11 +74,8 @@ void PhysicalVariable::SetField(const std::string &field_name,
 }
 
 PhysicalVariable::PtrType
-PhysicalVariable::GetField(const std::string &field_name)
+PhysicalVariable::GetField(const std::string &field_name) const
 {
-    if (!std::get<FieldsMap>(value_).count(field_name)) {
-        std::get<FieldsMap>(value_)[field_name] = std::make_shared<PhysicalVariable>(0);
-    }
     return std::get<FieldsMap>(value_).at(field_name);
 }
 

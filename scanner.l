@@ -18,7 +18,6 @@
 
 id          [_a-zA-Z][_a-zA-Z0-9]*
 number      [0-9]+
-brackets    "[]"
 blank       [ \t\r]
 
 %{
@@ -34,7 +33,6 @@ blank       [ \t\r]
 {blank}+                   
 
 "public static void main"   return yy::parser::make_BOYLERPLATE(driver.loc);
-{brackets}                  return yy::parser::make_EMPTYBRACKETS(driver.loc);
 "this."                     return yy::parser::make_THISINV(driver.loc);
 
 "+"                         return yy::parser::make_PLUS(driver.loc);
@@ -64,6 +62,7 @@ blank       [ \t\r]
 "public"                    return yy::parser::make_PUBLIC(driver.loc);
 "int"                       return yy::parser::make_INT(driver.loc);
 "boolean"                   return yy::parser::make_BOOLEAN(driver.loc);
+"bool"                      return yy::parser::make_BOOLEAN(driver.loc);
 "void"                      return yy::parser::make_VOID(driver.loc);
 "assert"                    return yy::parser::make_ASSERT(driver.loc);
 "if"                        return yy::parser::make_IF(driver.loc);

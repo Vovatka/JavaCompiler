@@ -7,12 +7,5 @@ class Test {
             arr[i] = i * 2;
             i = i + 1;
         }
-        sum = 0;
-        i = 0;
-        while (i < 5) {
-            sum = sum + arr[i];
-            i = i + 1;
-        }
-        System.out.println(sum);
     }
 }

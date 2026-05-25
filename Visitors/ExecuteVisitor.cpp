@@ -69,7 +69,7 @@ void ExecuteVisitor::Visit(IfElse *statement)
     {
         statement->If->Accept(this);
     }
-    else
+    else if (statement->Else != nullptr)
     {
         statement->Else->Accept(this);
     }
@@ -186,9 +186,10 @@ void ExecuteVisitor::Visit(ModExpression *expression)
 
 void ExecuteVisitor::Visit(IndexExpression *expression)
 {
-    expression->outer->Accept(this);
-    auto array = rax_;
+    // inner — массив, outer — индекс (см. конструктор и грамматику).
     expression->inner->Accept(this);
+    auto array = rax_;
+    expression->outer->Accept(this);
     rax_ = array->GetOnIndex(rax_->GetInt());
 }
 
@@ -270,6 +271,23 @@ void ExecuteVisitor::Visit(AllocExpression *expression)
     else
     {
         rax_ = std::make_shared<PhysicalVariable>(expression->type);
+        // For a user-defined class instance, pre-create each declared field
+        // with its default value so that reads before the first write (and the
+        // first read-modify-write such as `this.x = this.x + 1`) are valid.
+        auto *scope = expression->GetScope();
+        if (scope != nullptr)
+        {
+            STClass *class_ref = scope->GetClassByName(expression->type.type_name);
+            if (class_ref != nullptr)
+            {
+                for (const auto &field : class_ref->fields)
+                {
+                    rax_->SetField(
+                        field.first,
+                        std::make_shared<PhysicalVariable>(field.second.type));
+                }
+            }
+        }
     }
 }
 
@@ -304,13 +322,18 @@ void ExecuteVisitor::Visit(Return *statement)
 
 void ExecuteVisitor::Visit(MethodInvocation *statement)
 {
-    for (auto expr : statement->arguments->expressions)
+    if (statement->arguments != nullptr)
     {
-        expr->Accept(this);
-        stack_.push_back(rax_);
+        for (auto expr : statement->arguments->expressions)
+        {
+            expr->Accept(this);
+            stack_.push_back(rax_);
+        }
     }
     statement->class_expr->Accept(this);
     stack_.push_back(rax_);
+    // Remember where this call's frame begins so we can unwind it afterwards.
+    size_t frame_base = stack_.size();
     frame_pointer.push(stack_.size());
     auto type = statement->class_expr->GetType();
     statement->GetScope()
@@ -319,6 +342,13 @@ void ExecuteVisitor::Visit(MethodInvocation *statement)
         ->method_body->Accept(this);
     frame_pointer.pop();
     returning_ = false;
+    // The return value lives in rax_ (an independent shared_ptr), so it is
+    // safe to drop the pushed arguments, `this`, and locals from the stack.
+    // This keeps stack_ from growing without bound across (nested) calls.
+    stack_.resize(frame_base - 1 -
+                  (statement->arguments == nullptr
+                       ? 0
+                       : statement->arguments->expressions.size()));
 }
 
 void ExecuteVisitor::Visit(LocalVarDeclaration *statement)

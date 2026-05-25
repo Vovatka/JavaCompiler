@@ -3,4 +3,4 @@ parser.cpp
 build
 scanner.cpp
 parser.gv
-output
+out*

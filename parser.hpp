@@ -460,6 +460,7 @@ namespace yy {
 
       // type
       // simple_type
+      // builtin_type
       // array_type
       char dummy16[sizeof (Type)];
 
@@ -564,9 +565,8 @@ namespace yy {
     TOK_TRUE = 295,                // "true"
     TOK_FALSE = 296,               // "false"
     TOK_BOYLERPLATE = 297,         // "public static void main"
-    TOK_EMPTYBRACKETS = 298,       // "[]"
-    TOK_IDENTIFIER = 299,          // "id"
-    TOK_NUMBER = 300               // "num"
+    TOK_IDENTIFIER = 298,          // "id"
+    TOK_NUMBER = 299               // "num"
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -583,7 +583,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 47, ///< Number of tokens.
+        YYNTOKENS = 46, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -628,23 +628,23 @@ namespace yy {
         S_TRUE = 40,                             // "true"
         S_FALSE = 41,                            // "false"
         S_BOYLERPLATE = 42,                      // "public static void main"
-        S_EMPTYBRACKETS = 43,                    // "[]"
-        S_IDENTIFIER = 44,                       // "id"
-        S_NUMBER = 45,                           // "num"
-        S_46_then_ = 46,                         // "then"
-        S_YYACCEPT = 47,                         // $accept
-        S_program = 48,                          // program
-        S_class_declarations = 49,               // class_declarations
-        S_main_class = 50,                       // main_class
-        S_statements = 51,                       // statements
-        S_class_declaration = 52,                // class_declaration
-        S_declarations = 53,                     // declarations
-        S_declaration = 54,                      // declaration
-        S_field_declaration = 55,                // field_declaration
-        S_method_declaration = 56,               // method_declaration
-        S_formals = 57,                          // formals
-        S_type = 58,                             // type
-        S_simple_type = 59,                      // simple_type
+        S_IDENTIFIER = 43,                       // "id"
+        S_NUMBER = 44,                           // "num"
+        S_45_then_ = 45,                         // "then"
+        S_YYACCEPT = 46,                         // $accept
+        S_program = 47,                          // program
+        S_class_declarations = 48,               // class_declarations
+        S_main_class = 49,                       // main_class
+        S_statements = 50,                       // statements
+        S_class_declaration = 51,                // class_declaration
+        S_declarations = 52,                     // declarations
+        S_declaration = 53,                      // declaration
+        S_field_declaration = 54,                // field_declaration
+        S_method_declaration = 55,               // method_declaration
+        S_formals = 56,                          // formals
+        S_type = 57,                             // type
+        S_simple_type = 58,                      // simple_type
+        S_builtin_type = 59,                     // builtin_type
         S_array_type = 60,                       // array_type
         S_type_identifier = 61,                  // type_identifier
         S_statement = 62,                        // statement
@@ -751,6 +751,7 @@ namespace yy {
 
       case symbol_kind::S_type: // type
       case symbol_kind::S_simple_type: // simple_type
+      case symbol_kind::S_builtin_type: // builtin_type
       case symbol_kind::S_array_type: // array_type
         value.move< Type > (std::move (that.value));
         break;
@@ -1143,6 +1144,7 @@ switch (yykind)
 
       case symbol_kind::S_type: // type
       case symbol_kind::S_simple_type: // simple_type
+      case symbol_kind::S_builtin_type: // builtin_type
       case symbol_kind::S_array_type: // array_type
         value.template destroy< Type > ();
         break;
@@ -1258,8 +1260,8 @@ switch (yykind)
       {
 #if !defined _MSC_VER || defined __clang__
         YY_ASSERT (tok == token::TOK_END
-                   || (token::TOK_YYerror <= tok && tok <= token::TOK_EMPTYBRACKETS)
-                   || tok == 301);
+                   || (token::TOK_YYerror <= tok && tok <= token::TOK_BOYLERPLATE)
+                   || tok == 300);
 #endif
       }
 #if 201103L <= YY_CPLUSPLUS
@@ -1982,21 +1984,6 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_EMPTYBRACKETS (location_type l)
-      {
-        return symbol_type (token::TOK_EMPTYBRACKETS, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_EMPTYBRACKETS (const location_type& l)
-      {
-        return symbol_type (token::TOK_EMPTYBRACKETS, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
       make_IDENTIFIER (std::string v, location_type l)
       {
         return symbol_type (token::TOK_IDENTIFIER, std::move (v), std::move (l));
@@ -2102,10 +2089,10 @@ switch (yykind)
     static const signed char yydefact_[];
 
     // YYPGOTO[NTERM-NUM].
-    static const signed char yypgoto_[];
+    static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const signed char yydefgoto_[];
+    static const unsigned char yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
@@ -2354,8 +2341,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 593,     ///< Last index in yytable_.
-      yynnts_ = 21,  ///< Number of nonterminal symbols.
+      yylast_ = 580,     ///< Last index in yytable_.
+      yynnts_ = 22,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
 
@@ -2406,10 +2393,10 @@ switch (yykind)
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46
+      45
     };
     // Last valid token kind.
-    const int code_max = 301;
+    const int code_max = 300;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2490,6 +2477,7 @@ switch (yykind)
 
       case symbol_kind::S_type: // type
       case symbol_kind::S_simple_type: // simple_type
+      case symbol_kind::S_builtin_type: // builtin_type
       case symbol_kind::S_array_type: // array_type
         value.copy< Type > (YY_MOVE (that.value));
         break;
@@ -2600,6 +2588,7 @@ switch (yykind)
 
       case symbol_kind::S_type: // type
       case symbol_kind::S_simple_type: // simple_type
+      case symbol_kind::S_builtin_type: // builtin_type
       case symbol_kind::S_array_type: // array_type
         value.move< Type > (YY_MOVE (s.value));
         break;
@@ -2683,7 +2672,7 @@ switch (yykind)
 
 
 } // yy
-#line 2687 "/home/wowatka/workdir/MRA/JavaCompiler/parser.hpp"
+#line 2676 "/home/wowatka/workdir/MRA/JavaCompiler/parser.hpp"
 
 
 

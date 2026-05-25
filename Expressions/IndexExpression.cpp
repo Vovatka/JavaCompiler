@@ -4,7 +4,7 @@
 
 IndexExpression::IndexExpression(Expression *inner, Expression *outer,
                                  yy::location loc)
-    : inner(inner), outer(outer), Expression(loc)
+    : Expression(loc), inner(inner), outer(outer)
 {
 }
 
@@ -17,16 +17,19 @@ void IndexExpression::Accept(Visitor *visitor) { visitor->Visit(this); }
 
 Type IndexExpression::EvalType(ScopeLayer *scope)
 {
-    auto type = outer->GetType(scope);
+    // Грамматика: IndexExpression($1=массив, $3=индекс), т.е.
+    //   inner — индексируемый массив, outer — выражение-индекс.
+    auto type = inner->GetType(scope);
     if (!type.is_array)
     {
         std::cerr << loc << std::endl;
         throw std::runtime_error("You cant indexing of non-array object");
     }
-    if (inner->GetType(scope) != Type("int"))
+    if (outer->GetType(scope) != Type("int"))
     {
         std::cerr << loc << std::endl;
         throw std::runtime_error("Index must be int");
     }
+    // Результат индексации массива — элемент (тот же тип, но НЕ массив).
     return Type(type.type_name);
 }
