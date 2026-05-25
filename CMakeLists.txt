@@ -119,8 +119,6 @@ add_executable(
         Expressions/LengthExpression.h
         Expressions/ThisExpression.cpp
         Expressions/ThisExpression.h
-        Visitors/InterpreterVisitor.cpp
-        Visitors/InterpreterVisitor.h
         Symbols/BaseSymbol.cpp
         Symbols/BaseSymbol.h
         Symbols/STMethod.cpp

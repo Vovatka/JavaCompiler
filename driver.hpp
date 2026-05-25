@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "Visitors/InterpreterVisitor.h"
 #include "Visitors/PrintVisitor.h"
 #include "Visitors/SymbolTreeVisitor.h"
 #include "parser.hpp"
