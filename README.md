@@ -5,11 +5,10 @@
 ## Требования
 
 Для сборки и запуска проекта нужны:
-- `cmake`.
-- `make`.
-- `bash`.
-- `flex`.
-- `bison`.
+- `cmake`
+- `make`
+- `flex`
+- `bison`
 
 ## Структура проекта
 
@@ -49,7 +48,7 @@ mkdir build && cd build && cmake .. && make -j && cd ..
 ## Пример
 
 ```bash
-mkdir build && cd build && cmake .. && make && cd ..
+mkdir build && cd build && cmake .. && make -j && cd ..
 ./build/Compiler mini-java out
 ./run_all_tests.sh
 ```
