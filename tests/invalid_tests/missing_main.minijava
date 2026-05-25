@@ -1,0 +1,5 @@
+class MissingMain {
+    public int foo() {
+        return 42;
+    }
+}

@@ -1,0 +1,5 @@
+class WrongOrder {
+    void public static main() {
+        System.out.println(1);
+    }
+}

@@ -1,0 +1,8 @@
+class ArraySize {
+    public static void main() {
+        boolean b;
+        b = true;
+        int[] arr;
+        arr = new int[b];
+    }
+}

@@ -1,0 +1,10 @@
+class BinaryOp {
+    public static void main() {
+        boolean b;
+        b = true;
+        int x;
+        x = 5;
+        int y;
+        y = b + x;
+    }
+}

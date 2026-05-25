@@ -1,0 +1,9 @@
+class IfCondition {
+    public static void main() {
+        int x;
+        x = 5;
+        if (x) {
+            System.out.println(1);
+        }
+    }
+}

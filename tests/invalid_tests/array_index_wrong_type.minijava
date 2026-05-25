@@ -1,0 +1,9 @@
+class ArrayIndex {
+    public static void main() {
+        int[] arr;
+        arr = new int[10];
+        boolean b;
+        b = 0;
+        arr[b] = 5;
+    }
+}

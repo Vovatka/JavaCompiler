@@ -1,0 +1,9 @@
+class WhileCondition {
+    public static void main() {
+        int i;
+        i = 1;
+        while (i) {
+            i = i + 1;
+        }
+    }
+}

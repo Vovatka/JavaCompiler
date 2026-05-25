@@ -1,0 +1,5 @@
+class IllegalId {
+    public static void main() {
+        int 123var = 42;
+    }
+}

@@ -1,0 +1,6 @@
+class ArrayNoSize {
+    public static void main() {
+        int[] arr;
+        arr = new int[];
+    }
+}
