@@ -1,7 +1,6 @@
 #ifndef JAVACOMPILER_SCOPELAYER_H
 #define JAVACOMPILER_SCOPELAYER_H
 
-#include "Objects/Object.h"
 #include "Symbols/BaseSymbol.h"
 
 #include <memory>

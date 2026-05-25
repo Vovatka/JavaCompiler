@@ -1,6 +1,5 @@
 #include "ScopeLayer.h"
 
-#include "Objects/Int.h"
 #include "Statements/FormalsList.h"
 #include "Symbols/STMethod.h"
 #include <Statements/MethodDeclaration.h>

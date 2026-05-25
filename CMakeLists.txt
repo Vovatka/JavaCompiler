@@ -123,12 +123,6 @@ add_executable(
         Visitors/InterpreterVisitor.h
         Symbols/BaseSymbol.cpp
         Symbols/BaseSymbol.h
-        Objects/Object.cpp
-        Objects/Object.h
-        Objects/Int.cpp
-        Objects/Int.h
-        Objects/Bool.cpp
-        Objects/Bool.h
         Symbols/STMethod.cpp
         Symbols/STMethod.h
         Symbols/STVariable.cpp
