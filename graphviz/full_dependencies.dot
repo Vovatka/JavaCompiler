@@ -220,8 +220,6 @@ digraph MiniJavaDeps {
     "__lg6" -> "__lg7" [style=invis];
     "__lg8" [shape=box, style="rounded,filled", fillcolor="#b2dfdb", fontsize=9, label="Таблица символов"];
     "__lg7" -> "__lg8" [style=invis];
-    "__lg9" [shape=box, style="rounded,filled", fillcolor="#eeeeee", fontsize=9, label="Рантайм-объекты\n(legacy)"];
-    "__lg8" -> "__lg9" [style=invis];
   }
 
   "AddExpression" -> "SubExpression" [style=invis, weight=12];
