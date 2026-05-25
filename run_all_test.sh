@@ -54,6 +54,7 @@ run_tests() {
         else
             if [ -n "$stderr_output" ]; then
                 echo -e "${GREEN}✅ $base_name: SUCCESS (stderr is not empty)${NC}"
+                echo -e "$stderr_output"
                 passed=$((passed + 1))
             else
                 echo -e "${RED}❌ $base_name: FAILED (stderr is empty)${NC}"
