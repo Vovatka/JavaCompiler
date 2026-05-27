@@ -6,9 +6,6 @@ PhysicalVariable::PhysicalVariable(Type type, size_t size)
     {
         // value_ is default-constructed as the first alternative (FieldsMap),
         // so we must switch it to Array before using std::get<Array>.
-        // Каждая ячейка должна содержать реальный объект (а не нулевой
-        // shared_ptr), иначе запись `arr[i] = ...` (через `*cell = *value`)
-        // разыменует nullptr. Тип элемента — базовый тип массива.
         Type element_type = type;
         element_type.is_array = false;
         Array cells;
