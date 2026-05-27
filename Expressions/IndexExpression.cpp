@@ -1,4 +1,3 @@
-
 #include "IndexExpression.h"
 #include <variant>
 
@@ -17,8 +16,6 @@ void IndexExpression::Accept(Visitor *visitor) { visitor->Visit(this); }
 
 Type IndexExpression::EvalType(ScopeLayer *scope)
 {
-    // Грамматика: IndexExpression($1=массив, $3=индекс), т.е.
-    //   inner — индексируемый массив, outer — выражение-индекс.
     auto type = inner->GetType(scope);
     if (!type.is_array)
     {
@@ -30,6 +27,5 @@ Type IndexExpression::EvalType(ScopeLayer *scope)
         std::cerr << loc << std::endl;
         throw std::runtime_error("Index must be int");
     }
-    // Результат индексации массива — элемент (тот же тип, но НЕ массив).
     return Type(type.type_name);
 }

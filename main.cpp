@@ -5,7 +5,7 @@ int main(int argc, char **argv)
 {
     Driver d;
     int error_code = 0;
-    if (argc == 1)
+    if (argc != 3)
     {
         std::cerr << "Usage: " << argv[0] << " <mini-java file> <output file>";
         return EXIT_FAILURE;
@@ -14,10 +14,7 @@ int main(int argc, char **argv)
     int error = d.parse(filename);
     if (!error)
     {
-        if (argc == 3)
-        {
-            d.print_tree(argv[2]);
-        }
+        d.print_tree(argv[2]);
         error_code = d.run();
     }
     return error_code;

@@ -1,5 +1,3 @@
-
-
 #include "SymbolTreeVisitor.h"
 #include "Elements.h"
 

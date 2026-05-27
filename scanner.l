@@ -10,12 +10,6 @@
 %option c++
 %option yyclass="Scanner"
 
-%{
-  void Scanner::UpdateLocation() {
-      driver.loc.columns(yyleng);
-   }
-%}
-
 id          [_a-zA-Z][_a-zA-Z0-9]*
 number      [0-9]+
 blank       [ \t\r]
